@@ -27,9 +27,9 @@ class MovieFragment: Fragment() {
     private var _binding: FragmentMovieBinding? = null
     val binding get() = _binding!!
 
-    private val viewModel: SingleMovieViewModel by viewModels {
-        SingleMovieViewModelFactory(MoviesRepositoryImpl(movieId = arguments?.getInt("movieId")!!))
-    }
+//    private val viewModel: SingleMovieViewModel by viewModels {
+//        SingleMovieViewModelFactory(MoviesRepositoryImpl(), movieId = arguments?.getInt("movieId")!!)
+//    }
 
 
 
@@ -43,54 +43,54 @@ class MovieFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.apply{
-            val movieId = arguments?.getInt("movieId")!!
-            println(movieId)
-
-            val adapter = SingleMovieAdapter(parentFragmentManager, lifecycle, arguments?.getInt("movieId")!!)
-            viewPager.adapter = adapter
-
-            TabLayoutMediator(tab, viewPager) { tab, position ->
-                when(position) {
-                    0 -> tab.text = "Similar movies"
-                    1-> tab.text = "Reviews"
-                }
-            }.attach()
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.viewState.collect { viewState ->
-                        when (viewState) {
-                            is SingleMovieViewModel.ViewState.Success -> {
-                                loader.isVisible = false
-                                viewState.data?.let {
-                                    movieTitle.text = it.title
-                                    backDrop.load(IMAGE_URL + it.backdropPath)
-                                    moviePoster.load(IMAGE_URL + it.posterPath)
-                                    loader.visibility = View.GONE
-                                }
-                            }
-                            is SingleMovieViewModel.ViewState.Error -> {
-                                loader.isVisible = false
-                                println("error")
-                            }
-                            is SingleMovieViewModel.ViewState.Loading -> {
-                                loader.isVisible = true
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            backIcon.setOnClickListener {
-                parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,
-                    MainPageFragment()
-                ).commit()
-            }
-
-
-        }
+//        binding.apply{
+//            val movieId = arguments?.getInt("movieId")!!
+//            println(movieId)
+//
+//            val adapter = SingleMovieAdapter(parentFragmentManager, lifecycle, arguments?.getInt("movieId")!!)
+//            viewPager.adapter = adapter
+//
+//            TabLayoutMediator(tab, viewPager) { tab, position ->
+//                when(position) {
+//                    0 -> tab.text = "Similar movies"
+//                    1-> tab.text = "Reviews"
+//                }
+//            }.attach()
+//
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                    viewModel.viewState.collect { viewState ->
+//                        when (viewState) {
+//                            is SingleMovieViewModel.ViewState.Success -> {
+//                                loader.isVisible = false
+//                                viewState.data?.let {
+//                                    movieTitle.text = it.title
+//                                    backDrop.load(IMAGE_URL + it.backdropPath)
+//                                    moviePoster.load(IMAGE_URL + it.posterPath)
+//                                    loader.visibility = View.GONE
+//                                }
+//                            }
+//                            is SingleMovieViewModel.ViewState.Error -> {
+//                                loader.isVisible = false
+//                                println("error")
+//                            }
+//                            is SingleMovieViewModel.ViewState.Loading -> {
+//                                loader.isVisible = true
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//            backIcon.setOnClickListener {
+//                parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,
+//                    MainPageFragment()
+//                ).commit()
+//            }
+//
+//
+//        }
     }
 
 

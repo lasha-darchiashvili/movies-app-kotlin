@@ -22,12 +22,12 @@ import kotlin.getValue
 class MovieDetailsFragment: Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     val binding get() = _binding!!
-
-    private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModelFactory(MoviesRepositoryImpl(movieId = arguments?.getInt("movieId")!!))
-//            ,detailsTabName = arguments?.getString("detailsTabName"))
-
-    }
+//
+//    private val viewModel: DetailsViewModel by viewModels {
+//        DetailsViewModelFactory(MoviesRepositoryImpl(movieId = arguments?.getInt("movieId")!!))
+////            ,detailsTabName = arguments?.getString("detailsTabName"))
+//
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,34 +39,34 @@ class MovieDetailsFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.apply{
-            recyclerView.layoutManager = GridLayoutManager(context, 2)
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.viewState.collect { viewState ->
-                        when (viewState) {
-                            is DetailsViewModel.ViewState.Success -> {
-                                loader.isVisible = false
-                                println(1)
-                                println(viewState.data?.results)
-                                viewState.data?.results?.let {
-                                    recyclerView.adapter = DetailsAdapter(it)
-                                }
-                            }
-                            is DetailsViewModel.ViewState.Error -> {
-                                loader.isVisible = false
-                                println("error")
-                            }
-                            is DetailsViewModel.ViewState.Loading -> {
-                                loader.isVisible = true
-                            }
-                        }
-
-                    }
-                }
-            }
-            }
+//        binding.apply{
+//            recyclerView.layoutManager = GridLayoutManager(context, 2)
+//
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                    viewModel.viewState.collect { viewState ->
+//                        when (viewState) {
+//                            is DetailsViewModel.ViewState.Success -> {
+//                                loader.isVisible = false
+//                                println(1)
+//                                println(viewState.data?.results)
+//                                viewState.data?.results?.let {
+//                                    recyclerView.adapter = DetailsAdapter(it)
+//                                }
+//                            }
+//                            is DetailsViewModel.ViewState.Error -> {
+//                                loader.isVisible = false
+//                                println("error")
+//                            }
+//                            is DetailsViewModel.ViewState.Loading -> {
+//                                loader.isVisible = true
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//            }
     }
 
     companion object {

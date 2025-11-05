@@ -4,25 +4,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.MovieReviews
+import com.example.moviesapp.SearchedMovies
 import com.example.moviesapp.repository.MoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ReviewsViewModel(val repository: MoviesRepository, val movieId: Int): ViewModel() {
+class SearchViewModel(val repository: MoviesRepository): ViewModel() {
     private val _viewState = MutableStateFlow<ViewState>(ViewState.Loading)
 
     val viewState = _viewState.asStateFlow()
 
-    init {
-        loadMovie(movieId)
-    }
 
-    fun loadMovie(movieId: Int) {
+    fun loadMovies(movie: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val apiResult = repository.getMovieReviews(movieId)
+                val apiResult = repository.getSearchedMovies(movie)
                 _viewState.value = ViewState.Success(apiResult)
             }
             catch (e: Exception){
@@ -33,16 +31,16 @@ class ReviewsViewModel(val repository: MoviesRepository, val movieId: Int): View
 
     sealed class ViewState {
         object Loading : ViewState()
-        data class Success(val data: MovieReviews?) : ViewState()
+        data class Success(val data: SearchedMovies?) : ViewState()
         data class Error(val message: String) : ViewState()
     }
 }
 
-class ReviewsViewModelFactory(private val repository: MoviesRepository, private val movieId: Int): ViewModelProvider.Factory {
+class SearchViewModelFactory(private val repository: MoviesRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(ReviewsViewModel::class.java)) {
+        if(modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ReviewsViewModel(repository, movieId) as T
+            return SearchViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

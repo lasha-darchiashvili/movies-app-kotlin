@@ -48,7 +48,7 @@ import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MainMoviesViewModel
 import com.example.moviesapp.viewmodels.MoviesViewModelFactory
 
-const val IMAGE_URL_COMPOSE = "https://image.tmdb.org/t/p/original/"
+//const val IMAGE_URL_COMPOSE = "https://image.tmdb.org/t/p/original/"
 
 class MainPageFragment: Fragment(){
     private var _binding: FragmentMainBinding? = null
@@ -65,7 +65,7 @@ class MainPageFragment: Fragment(){
         val composeView = ComposeView(requireContext())
 
         composeView.setContent{
-            MyNavigationHost()
+//            MyNavigationHost()
         }
         return composeView
     }
@@ -92,140 +92,139 @@ class MainPageFragment: Fragment(){
 
 
 }
-
-@Composable
-fun Main(onMovieClick: (Int) -> Unit) {
-    Box(
-    modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFF242A32))
-        .padding(top = 30.dp),
-    contentAlignment = Alignment.Center
-) {
-    Column(modifier = Modifier.fillMaxSize(0.95f)) {
-        Text(
-            text = "What do you want to watch",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFFFFFFFF)
-        )
-        Spacer(modifier = Modifier.height(22.dp))
-        TextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier.height(42.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFF3A3F47)),
-            singleLine = true
-        )
-        Spacer(modifier = Modifier.height(22.dp))
-        Tabs(onMovieClick)
-
-    }
-
-
-}
-}
-
-
-@Composable
-fun Tabs(onMovieClick: (Int) -> Unit) {
-    val tabItems = listOf(
-        TabItem("popular"),
-        TabItem("now_playing"),
-        TabItem("top_rated"),
-        TabItem("upcoming"),
-    )
-    var selectedTabIndex by remember {
-        mutableIntStateOf(0)
-    }
-    Column(modifier = Modifier.fillMaxSize()) {
-        TabRow(selectedTabIndex = selectedTabIndex,
-            backgroundColor = Color.Transparent,
-            contentColor = Color.White,
-            ) {
-            tabItems.forEachIndexed { index, item ->
-                Tab(selected = index == selectedTabIndex,
-                    onClick = {
-                        selectedTabIndex = index
-                        println(tabItems[index].title)
-                    },
-                    text = {
-                        Text(text = item.title.replace('_', ' ')
-                            .split(' ')
-                            .joinToString(" ") { it.capitalize() } )
-                    })
-            }
-        }
-        println(tabItems[selectedTabIndex].title)
-    MoviesList(tabItems[selectedTabIndex].title, onMovieClick)
-    }
-}
-
-@Composable
-fun MoviesList(category: String, onMovieClick: (Int) -> Unit) {
-    val viewModel: MainMoviesViewModel = viewModel(key=category,
-        factory = MoviesViewModelFactory(MoviesRepositoryImpl(category))
-    )
-    val viewState by viewModel.viewState.collectAsState()
-
-    when (viewState) {
-        is MainMoviesViewModel.ViewState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    color = Color.Gray
-                )
-            }
-        }
-
-        is MainMoviesViewModel.ViewState.Error -> {
-            println("eror")
-        }
-
-        is MainMoviesViewModel.ViewState.Success -> {
-            val movies = (viewState as MainMoviesViewModel.ViewState.Success).data?.results ?: emptyList()
-            println(movies)
-            LazyGrid(movies, onMovieClick)
-
-        }
-    }
-
-}
-
-@Composable
-fun LazyGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit){
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            top = 16.dp,
-            end = 12.dp,
-            bottom = 16.dp
-        ),
-        content = {
-            items(movies) { movie ->
-                AsyncImage(
-                    model = IMAGE_URL_COMPOSE + movie.posterPath,
-                    contentDescription = "movie image",
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .height(120.dp)
-                        .clickable {
-                            onMovieClick(movie.id)
-                        }
-                )
-            }
-        }
-    )
-}
+//
+//@Composable
+//fun Main(onMovieClick: (Int) -> Unit) {
+//    Box(
+//    modifier = Modifier
+//        .fillMaxSize()
+//        .background(Color(0xFF242A32))
+//        .padding(top = 30.dp),
+//    contentAlignment = Alignment.Center
+//) {
+//    Column(modifier = Modifier.fillMaxSize(0.95f)) {
+//        Text(
+//            text = "What do you want to watch",
+//            fontSize = 20.sp,
+//            fontWeight = FontWeight.Bold,
+//            color = Color(0xFFFFFFFF)
+//        )
+//        Spacer(modifier = Modifier.height(22.dp))
+//        TextField(
+//            value = "",
+//            onValueChange = {},
+//            modifier = Modifier.height(42.dp)
+//                .fillMaxWidth()
+//                .clip(RoundedCornerShape(12.dp))
+//                .background(Color(0xFF3A3F47)),
+//            singleLine = true
+//        )
+//        Spacer(modifier = Modifier.height(22.dp))
+//        Tabs(onMovieClick)
+//
+//    }
+//
+//
+//}
+//}
+//
+//
+//@Composable
+//fun Tabs(onMovieClick: (Int) -> Unit) {
+//    val tabItems = listOf(
+//        TabItem("popular"),
+//        TabItem("now_playing"),
+//        TabItem("top_rated"),
+//        TabItem("upcoming"),
+//    )
+//    var selectedTabIndex by remember {
+//        mutableIntStateOf(0)
+//    }
+//    Column(modifier = Modifier.fillMaxSize()) {
+//        TabRow(selectedTabIndex = selectedTabIndex,
+//            backgroundColor = Color.Transparent,
+//            contentColor = Color.White,
+//            ) {
+//            tabItems.forEachIndexed { index, item ->
+//                Tab(selected = index == selectedTabIndex,
+//                    onClick = {
+//                        selectedTabIndex = index
+//                        println(tabItems[index].title)
+//                    },
+//                    text = {
+//                        Text(text = item.title.replace('_', ' ')
+//                            .split(' ')
+//                            .joinToString(" ") { it.capitalize() } )
+//                    })
+//            }
+//        }
+//        println(tabItems[selectedTabIndex].title)
+//    MoviesList(tabItems[selectedTabIndex].title, onMovieClick)
+//    }
+//}
+//
+//@Composable
+//fun MoviesList(category: String, onMovieClick: (Int) -> Unit) {
+//    val viewModel: MainMoviesViewModel = viewModel(key = category, factory = MoviesViewModelFactory(MoviesRepositoryImpl(), category)
+//    )
+//    val viewState by viewModel.viewState.collectAsState()
+//
+//    when (viewState) {
+//        is MainMoviesViewModel.ViewState.Loading -> {
+//            Box(
+//                modifier = Modifier.fillMaxSize(),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                CircularProgressIndicator(
+//                    color = Color.Gray
+//                )
+//            }
+//        }
+//
+//        is MainMoviesViewModel.ViewState.Error -> {
+//            println("eror")
+//        }
+//
+//        is MainMoviesViewModel.ViewState.Success -> {
+//            val movies = (viewState as MainMoviesViewModel.ViewState.Success).data?.results ?: emptyList()
+//            println(movies)
+//            LazyGrid(movies, onMovieClick)
+//
+//        }
+//    }
+//
+//}
+//
+//@Composable
+//fun LazyGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit){
+//
+//    LazyVerticalGrid(
+//        columns = GridCells.Fixed(3),
+//
+//        contentPadding = PaddingValues(
+//            start = 12.dp,
+//            top = 16.dp,
+//            end = 12.dp,
+//            bottom = 16.dp
+//        ),
+//        content = {
+//            items(movies) { movie ->
+//                AsyncImage(
+//                    model = movie.posterPath?.let {IMAGE_URL_COMPOSE + it } ?: "https://www.reelviews.net/resources/img/default_poster.jpg",
+//                    contentDescription = "movie image",
+//                    modifier = Modifier
+//                        .padding(4.dp)
+//                        .fillMaxWidth()
+//                        .aspectRatio(1f)
+//                        .height(120.dp)
+//                        .clickable {
+//                            onMovieClick(movie.id)
+//                        }
+//                )
+//            }
+//        }
+//    )
+//}
 
 //@Composable
 //fun UserProfile(name: String, url: String) {
@@ -248,9 +247,9 @@ fun LazyGrid(movies: List<Movie>, onMovieClick: (Int) -> Unit){
 
 
 
-@Composable
-fun SingleMovieTest(movieId: Int) {
-    Text("$movieId asdasdasdasd $movieId")
-}
-
-data class TabItem(val title: String)
+//@Composable
+//fun SingleMovieTest(movieId: Int) {
+//    Text("$movieId asdasdasdasd $movieId")
+//}
+//
+//data class TabItem(val title: String)

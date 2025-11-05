@@ -10,15 +10,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SimilarMoviesViewModel(val repository: MoviesRepository): ViewModel() {
+class SimilarMoviesViewModel(val repository: MoviesRepository, similarMovieId: Int): ViewModel() {
     private val _viewState = MutableStateFlow<ViewState>(ViewState.Loading)
 
     val viewState = _viewState.asStateFlow()
 
+
     init {
+        loadMovie(similarMovieId)
+    }
+
+    fun loadMovie(similarMovieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val apiResult = repository.getDetailsMovies()
+                val apiResult = repository.getSimilarMovies(similarMovieId)
                 _viewState.value = ViewState.Success(apiResult)
             }
             catch (e: Exception){
@@ -34,11 +39,11 @@ class SimilarMoviesViewModel(val repository: MoviesRepository): ViewModel() {
     }
 }
 
-class SimilarMoviesViewModelFactory(private val repository: MoviesRepository): ViewModelProvider.Factory {
+class SimilarMoviesViewModelFactory(private val repository: MoviesRepository, private val similarMovieId: Int): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(SimilarMoviesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SimilarMoviesViewModel(repository) as T
+            return SimilarMoviesViewModel(repository, similarMovieId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

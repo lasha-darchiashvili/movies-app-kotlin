@@ -6,6 +6,12 @@ import kotlinx.serialization.Serializable
 object Home
 
 @Serializable
-data class Detail(
+data class MovieDetails(
     val id: Int
 )
+
+@Serializable
+object Search
+
+@Serializable
+object WatchList

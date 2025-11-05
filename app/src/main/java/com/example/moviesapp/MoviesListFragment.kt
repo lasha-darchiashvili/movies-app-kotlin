@@ -26,9 +26,9 @@ class MoviesListFragment: Fragment() {
     private var _binding: FragmentMoviesBinding? = null
 
 
-    private val viewModel: MainMoviesViewModel by viewModels {
-        MoviesViewModelFactory(MoviesRepositoryImpl(arguments?.getString(CATEGORY)!!))
-    }
+//    private val viewModel: MainMoviesViewModel by viewModels {
+//        MoviesViewModelFactory(MoviesRepositoryImpl(arguments?.getString(CATEGORY)!!))
+//    }
     val binding get() = _binding!!
 
     val moviesAdapter = MoviesAdapter(onClick = { movieData ->
@@ -47,37 +47,37 @@ class MoviesListFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.apply{
-            recyclerView.layoutManager = GridLayoutManager(context, 3)
-            recyclerView.adapter = moviesAdapter
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.viewState.collect { viewState ->
-                        when (viewState) {
-                            is MainMoviesViewModel.ViewState.Success -> {
-                                loader.isVisible = false
-                                viewState.data?.results?.let {
-                                    moviesAdapter.submitList(it)
-                                    }
-
-                            }
-                            is MainMoviesViewModel.ViewState.Error -> {
-                                loader.isVisible = false
-                                println("error")
-                            }
-                            is MainMoviesViewModel.ViewState.Loading -> {
-                                loader.isVisible = true
-                            }
-                        }
-
-                    }
-                }
-            }
-
-
-
-
-        }
+//        binding.apply{
+//            recyclerView.layoutManager = GridLayoutManager(context, 3)
+//            recyclerView.adapter = moviesAdapter
+//            viewLifecycleOwner.lifecycleScope.launch {
+//                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                    viewModel.viewState.collect { viewState ->
+//                        when (viewState) {
+//                            is MainMoviesViewModel.ViewState.Success -> {
+//                                loader.isVisible = false
+//                                viewState.data?.results?.let {
+//                                    moviesAdapter.submitList(it)
+//                                    }
+//
+//                            }
+//                            is MainMoviesViewModel.ViewState.Error -> {
+//                                loader.isVisible = false
+//                                println("error")
+//                            }
+//                            is MainMoviesViewModel.ViewState.Loading -> {
+//                                loader.isVisible = true
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//
+//
+//
+//        }
     }
 
     companion object {
