@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.entitites.MovieItem
 import com.example.moviesapp.repository.MoviesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import javax.inject.Inject
 
 
 data class MoviesUiState(
@@ -18,7 +19,8 @@ data class MoviesUiState(
     val isLoading: Boolean = false
 )
 
-class MoviesDatabaseViewModel(
+@HiltViewModel
+class MoviesDatabaseViewModel @Inject constructor(
     private val repository: MoviesRepository
 ) : ViewModel() {
     private val _viewState = MutableStateFlow<MoviesUiState>(MoviesUiState(isLoading = true))

@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviesapp.MovieReviews
 import com.example.moviesapp.SearchedMovies
 import com.example.moviesapp.repository.MoviesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(val repository: MoviesRepository): ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(val repository: MoviesRepository): ViewModel() {
     private val _viewState = MutableStateFlow<ViewState>(ViewState.Loading)
 
     val viewState = _viewState.asStateFlow()

@@ -5,6 +5,7 @@ plugins {
     id("kotlin-parcelize")
     alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -79,4 +80,7 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.3")
     implementation("androidx.room:room-ktx:2.8.3")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.dagger:hilt-android:2.57.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

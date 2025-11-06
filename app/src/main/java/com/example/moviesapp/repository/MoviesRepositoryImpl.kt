@@ -14,19 +14,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.text.insert
 
-class MoviesRepositoryImpl(private val dao: MoviesDao? = null
+@Singleton
+class MoviesRepositoryImpl @Inject constructor(private val dao: MoviesDao, private val api: MoviesApi
 ): MoviesRepository {
 
 
-    val json = Json { ignoreUnknownKeys = true }
-
-    val retrofit = Retrofit.Builder().baseUrl("https://api.themoviedb.org/")
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
-
-    val api = retrofit.create(MoviesApi::class.java)
+//    val json = Json { ignoreUnknownKeys = true }
+//
+//    val retrofit = Retrofit.Builder().baseUrl("https://api.themoviedb.org/")
+//        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+//        .build()
+//
+//    val api = retrofit.create(MoviesApi::class.java)
 
     override suspend fun getAllMovies(category: String?): AllMoviesData {
         val response = api.getAllMovies(category)

@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -43,22 +44,20 @@ import com.example.moviesapp.app.App
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MoviesDatabaseViewModel
 import com.example.moviesapp.viewmodels.MoviesDatabaseViewModelFactory
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.intellij.lang.annotations.JdkConstants
 
 @Composable
 fun WatchListComp(navController: NavController, innerPadding: PaddingValues) {
     val context = LocalContext.current
-    val viewModel: MoviesDatabaseViewModel = viewModel(
-        factory = MoviesDatabaseViewModelFactory(
-            MoviesRepositoryImpl((context.applicationContext as App).dataBase.toDosDao())
-        ))
+    val viewModel: MoviesDatabaseViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
     val movieList = viewState.movies
 
 
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFF242A32)),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Header(navController, title = "Watch list")
+        Header({ navController.popBackStack() }, title = "Watch list")
 
         if(movieList.isEmpty()) {
 

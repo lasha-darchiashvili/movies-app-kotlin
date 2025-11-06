@@ -27,6 +27,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -57,7 +59,6 @@ import com.example.moviesapp.navigation.Search
 import com.example.moviesapp.navigation.WatchList
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MainMoviesViewModel
-import com.example.moviesapp.viewmodels.MoviesViewModelFactory
 
 const val IMAGE_URL_COMPOSE = "https://image.tmdb.org/t/p/original/"
 
@@ -224,8 +225,10 @@ fun Tabs(onMovieClick: (Int) -> Unit, innerPadding: PaddingValues) {
 
 @Composable
 fun MoviesList(category: String, onMovieClick: (Int) -> Unit, innerPadding: PaddingValues) {
-    val viewModel: MainMoviesViewModel = viewModel(key = category, factory = MoviesViewModelFactory(MoviesRepositoryImpl(), category)
-    )
+    val viewModel: MainMoviesViewModel = hiltViewModel()
+    LaunchedEffect(category) {
+        viewModel.loadMovies(category)
+    }
     val viewState by viewModel.viewState.collectAsState()
 
     when (viewState) {

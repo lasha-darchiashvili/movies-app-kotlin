@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -51,17 +52,15 @@ import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.SearchViewModel
 import com.example.moviesapp.viewmodels.SearchViewModelFactory
 import com.example.moviesapp.viewmodels.SimilarMoviesViewModel
-import com.example.moviesapp.viewmodels.SimilarMoviesViewModelFactory
 
 @Composable
 fun SearchMovieComp(navController: NavController) {
     var query by remember { mutableStateOf("") }
-    val viewModel: SearchViewModel = viewModel(
-        factory = SearchViewModelFactory(MoviesRepositoryImpl()))
+    val viewModel: SearchViewModel = hiltViewModel()
         val viewState by viewModel.viewState.collectAsState()
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFF242A32)),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Header(navController, title = "Search", rightSideIcon = R.drawable.info_icon)
+        Header({ navController.popBackStack() }, title = "Search", rightSideIcon = R.drawable.info_icon)
         Spacer(modifier=Modifier.height(30.dp))
 
         Box(modifier = Modifier.fillMaxWidth(0.88F),

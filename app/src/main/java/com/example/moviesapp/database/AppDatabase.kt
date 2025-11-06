@@ -9,7 +9,7 @@ import com.example.moviesapp.entitites.MovieItem
 
 @Database(entities = [MovieItem::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun toDosDao(): MoviesDao
+    abstract fun moviesDao(): MoviesDao
 
     companion object {
         @Volatile

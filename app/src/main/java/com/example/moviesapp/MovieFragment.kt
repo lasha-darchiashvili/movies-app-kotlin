@@ -15,7 +15,6 @@ import com.example.moviesapp.composables.MainPageFragment
 import com.example.moviesapp.databinding.FragmentMovieBinding
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.SingleMovieViewModel
-import com.example.moviesapp.viewmodels.SingleMovieViewModelFactory
 import com.example.moviesapp.viewpager.SingleMovieAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch

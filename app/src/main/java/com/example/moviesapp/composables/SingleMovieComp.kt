@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -58,11 +59,9 @@ import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MoviesDatabaseViewModel
 import com.example.moviesapp.viewmodels.MoviesDatabaseViewModelFactory
 import com.example.moviesapp.viewmodels.ReviewsViewModel
-import com.example.moviesapp.viewmodels.ReviewsViewModelFactory
 import com.example.moviesapp.viewmodels.SimilarMoviesViewModel
-import com.example.moviesapp.viewmodels.SimilarMoviesViewModelFactory
 import com.example.moviesapp.viewmodels.SingleMovieViewModel
-import com.example.moviesapp.viewmodels.SingleMovieViewModelFactory
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun SingleMovieComp(movieId: Int, navController: NavController) {
@@ -76,10 +75,7 @@ fun SingleMovieComp(movieId: Int, navController: NavController) {
 
     val context = LocalContext.current
 //    context.deleteDatabase("movie_database")
-    val viewModel: MoviesDatabaseViewModel = viewModel(
-        factory = MoviesDatabaseViewModelFactory(
-            MoviesRepositoryImpl((context.applicationContext as App).dataBase.toDosDao())
-        ))
+    val viewModel: MoviesDatabaseViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
     val movieList = viewState.movies
     val movieAlreadyExists = movieList.map{item -> item.title}.contains(movieDetails?.title)
@@ -88,7 +84,7 @@ fun SingleMovieComp(movieId: Int, navController: NavController) {
 
     Column(modifier = Modifier.fillMaxSize().background(Color(0xFF242A32)),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Header(navController, "Details", R.drawable.bookmark_filled, movieDetails, viewModel, movieAlreadyExists)
+        Header({ navController.popBackStack() }, "Details", R.drawable.bookmark_filled, movieDetails, viewModel, movieAlreadyExists)
         MovieMainSectionLoader(movieId, { overview ->
             movieOverview = overview
         },) {details ->
@@ -101,7 +97,7 @@ fun SingleMovieComp(movieId: Int, navController: NavController) {
 }
 
 @Composable
-fun Header(navController: NavController? = null, title: String, rightSideIcon: Int? = null, movieDetails: MovieDetails? = null,
+fun Header(onNavigateBack: () -> Unit, title: String, rightSideIcon: Int? = null, movieDetails: MovieDetails? = null,
            viewModel: MoviesDatabaseViewModel? = null, movieAlreadyExists: Boolean? = null) {
 
     Row(horizontalArrangement = Arrangement.SpaceBetween,
@@ -114,7 +110,7 @@ fun Header(navController: NavController? = null, title: String, rightSideIcon: I
             contentDescription = null,
 
             modifier = Modifier.size(width = 20.dp, height = 20.dp).clickable{
-                navController?.popBackStack()
+                onNavigateBack()
             })
 
         Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.W600, color = Color(0xFFFFFFFF))
@@ -141,9 +137,7 @@ fun Header(navController: NavController? = null, title: String, rightSideIcon: I
 
 @Composable
 fun MovieMainSectionLoader(movieId: Int, setOverview: (String?) -> Unit, setMovieDetails: (MovieDetails) -> Unit) {
-    val viewModel: SingleMovieViewModel = viewModel(key=movieId.toString(),
-        factory = SingleMovieViewModelFactory(MoviesRepositoryImpl(), movieId)
-    )
+    val viewModel: SingleMovieViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
 //    LaunchedEffect(
 //        Unit
@@ -316,11 +310,7 @@ fun AboutMovie(overview: String?) {
 
 @Composable
 fun SimilarMovieTabsContentLoader(movieId: Int) {
-    val viewModel: SimilarMoviesViewModel = viewModel(
-        factory = SimilarMoviesViewModelFactory(
-            MoviesRepositoryImpl(), movieId
-        )
-    )
+    val viewModel: SimilarMoviesViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
 
     when (viewState) {
@@ -352,10 +342,7 @@ fun SimilarMovieTabsContentLoader(movieId: Int) {
 
 @Composable
 fun ReviewsTabsContentLoader(movieId: Int) {
-    val viewModel: ReviewsViewModel = viewModel(
-        factory = ReviewsViewModelFactory(
-            MoviesRepositoryImpl(), movieId)
-    )
+    val viewModel: ReviewsViewModel = hiltViewModel()
     val viewState by viewModel.viewState.collectAsState()
 
     when (viewState) {

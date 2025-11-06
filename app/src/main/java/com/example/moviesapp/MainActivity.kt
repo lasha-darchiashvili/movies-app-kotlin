@@ -68,7 +68,7 @@ import com.example.moviesapp.navigation.Search
 import com.example.moviesapp.navigation.WatchList
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MainMoviesViewModel
-import com.example.moviesapp.viewmodels.MoviesViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 
 data class BottomNavigationItem(
@@ -77,7 +77,7 @@ data class BottomNavigationItem(
     val unSelectedIcon: Painter
 )
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)

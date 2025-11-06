@@ -8,14 +8,17 @@ import androidx.navigation.toRoute
 import com.example.moviesapp.Movie
 import com.example.moviesapp.MovieDetails
 import com.example.moviesapp.repository.MoviesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SingleMovieViewModel(val repository: MoviesRepository, val savedStateHandle: SavedStateHandle): ViewModel() {
+@HiltViewModel
+class SingleMovieViewModel @Inject constructor(val repository: MoviesRepository, val savedStateHandle: SavedStateHandle): ViewModel() {
 
-    val movie: MovieDetails = savedStateHandle.toRoute()
+    val movie: com.example.moviesapp.navigation.MovieDetails = savedStateHandle.toRoute()
 
     private val _viewState = MutableStateFlow<ViewState>(ViewState.Loading)
 
@@ -42,14 +45,14 @@ class SingleMovieViewModel(val repository: MoviesRepository, val savedStateHandl
     }
 }
 
-class SingleMovieViewModelFactory(private val repository: MoviesRepository, private val movieId: Int): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(SingleMovieViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SingleMovieViewModel(repository, movieId) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-
-
-}
+//class SingleMovieViewModelFactory(private val repository: MoviesRepository, private val movieId: Int): ViewModelProvider.Factory {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if(modelClass.isAssignableFrom(SingleMovieViewModel::class.java)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return SingleMovieViewModel(repository, movieId) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//
+//
+//}

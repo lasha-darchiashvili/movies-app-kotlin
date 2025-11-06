@@ -46,7 +46,6 @@ import com.example.moviesapp.databinding.FragmentMainBinding
 import com.example.moviesapp.navigation.MyNavigationHost
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MainMoviesViewModel
-import com.example.moviesapp.viewmodels.MoviesViewModelFactory
 
 //const val IMAGE_URL_COMPOSE = "https://image.tmdb.org/t/p/original/"
 

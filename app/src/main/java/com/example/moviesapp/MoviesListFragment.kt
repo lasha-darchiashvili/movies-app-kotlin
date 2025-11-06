@@ -15,7 +15,6 @@ import com.example.moviesapp.MoviesRecycle.MoviesAdapter
 import com.example.moviesapp.databinding.FragmentMoviesBinding
 import com.example.moviesapp.repository.MoviesRepositoryImpl
 import com.example.moviesapp.viewmodels.MainMoviesViewModel
-import com.example.moviesapp.viewmodels.MoviesViewModelFactory
 import kotlinx.coroutines.launch
 
 const val CATEGORY = "category"
